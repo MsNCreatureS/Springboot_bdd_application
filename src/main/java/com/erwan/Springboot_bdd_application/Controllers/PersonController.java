@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,5 +33,16 @@ public class PersonController {
 		return new ResponseEntity<>(personRepository.findAll(), HttpStatus.OK);
 		
 	}
+	
+	// fonction pour crée une personne
+	
+	@PostMapping
+	public ResponseEntity<Person> createPerson(@RequestBody Person person) {
+		
+		Person personCreated = personRepository.save(person);
+		
+		return new ResponseEntity<>(personCreated, HttpStatus.CREATED);
+	}
+	
 
 }
