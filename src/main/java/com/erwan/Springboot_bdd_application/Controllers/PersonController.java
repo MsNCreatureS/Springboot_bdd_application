@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,6 +56,29 @@ public class PersonController {
 		if(person.isPresent()) {
 			
 			return new ResponseEntity<>(person.get(), HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		
+	}
+	
+	
+	//Fonction pour update une personne
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<Person> updatePerson(@PathVariable Long id, @RequestBody Person personDetails) {
+		
+		Optional<Person> person = personRepository.findById(id);
+		
+		if(person.isPresent()) {
+			
+			Person existingPerson = person.get();
+			existingPerson.setCity(personDetails.getCity());
+			existingPerson.setPhonenumber(personDetails.getPhonenumber());
+			
+			Person updatedPerson = personRepository.save(existingPerson);
+			
+			return new ResponseEntity<>(updatedPerson, HttpStatus.OK);
 		}
 		
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
