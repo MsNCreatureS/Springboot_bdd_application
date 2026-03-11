@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.erwan.Springboot_bdd_application.Exceptions.ServiceException;
 import com.erwan.Springboot_bdd_application.Models.Person;
 import com.erwan.Springboot_bdd_application.Services.PersonService; // Attention à bien importer ton nouveau Service !
 
@@ -31,15 +32,21 @@ public class PersonController {
 	
 	// Créer une personne
 	@PostMapping
-	public ResponseEntity<Person> createPerson(@RequestBody Person person) {
-		Person personCreated = personService.createPerson(person);
+	public ResponseEntity<Object> createPerson(@RequestBody Person person) {
 		
-		if(personCreated != null) {
+		try {
+			// 1. On ESSAIE de créer la personne
+			Person personCreated = personService.createPerson(person);
 			
-			return new ResponseEntity<>(personCreated, HttpStatus.CREATED);
+			// Si succès : On utilise la syntaxe de ton cours !
+			return ResponseEntity.status(HttpStatus.CREATED).body(personCreated);
+			
+		} catch (ServiceException e) {
+			// 2. L'alarme a sonné ! On l'ATTRAPE.
+			
+			// Si erreur : On renvoie le message d'erreur avec le statut 409 CONFLICT
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
 		}
-		
-		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 	
 	// Trouver par ID

@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.erwan.Springboot_bdd_application.Exceptions.ServiceException;
 import com.erwan.Springboot_bdd_application.Models.Person;
 import com.erwan.Springboot_bdd_application.Repository.PersonRepository;
 
@@ -29,13 +30,13 @@ public class PersonService {
 	}
 
 	// Créer une personne
-	public Person createPerson(Person person) {
+	public Person createPerson(Person person) throws ServiceException {
 		
 		Optional<Person> existingPerson = personRepository.findByName(person.getName());
 		
 		if(existingPerson.isPresent()) {
-			
-			return null;
+			// On ne fait plus "return null;". On LÈVE L'EXCEPTION !
+			throw new ServiceException("Impossible de créer la personne : le nom '" + person.getName() + "' existe déjà !");
 		}
 		
 		return personRepository.save(person);
