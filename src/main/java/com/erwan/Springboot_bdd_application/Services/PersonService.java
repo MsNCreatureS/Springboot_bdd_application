@@ -30,7 +30,14 @@ public class PersonService {
 
 	// Créer une personne
 	public Person createPerson(Person person) {
-		// Ici, tu pourras ajouter tes "if" de vérification plus tard !
+		
+		Optional<Person> existingPerson = personRepository.findByName(person.getName());
+		
+		if(existingPerson.isPresent()) {
+			
+			return null;
+		}
+		
 		return personRepository.save(person);
 	}
 

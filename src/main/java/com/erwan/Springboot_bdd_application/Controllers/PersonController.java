@@ -33,7 +33,13 @@ public class PersonController {
 	@PostMapping
 	public ResponseEntity<Person> createPerson(@RequestBody Person person) {
 		Person personCreated = personService.createPerson(person);
-		return new ResponseEntity<>(personCreated, HttpStatus.CREATED);
+		
+		if(personCreated != null) {
+			
+			return new ResponseEntity<>(personCreated, HttpStatus.CREATED);
+		}
+		
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 	
 	// Trouver par ID
