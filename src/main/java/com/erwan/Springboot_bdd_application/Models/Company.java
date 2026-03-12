@@ -17,6 +17,16 @@ public class Company {
 	
 	private String name;
 	
+	
+	// LE CONSTRUCTEUR VIDE (Indispensable pour Hibernate)
+    public Company() {
+    }
+	
+	public Company(String name) {
+	    this.name = name;
+	}
+	
+	
 	public Long getId() {
 		return id;
 	}
@@ -34,9 +44,7 @@ public class Company {
 	}
 	
 	
-	public Company(String name) {
-	    this.name = name;
-	}
+
 
 
 }
