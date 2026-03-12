@@ -17,6 +17,13 @@ public class Person {
 	private String city;
 	
 	private String phoneNumber;
+	
+	// La relation : Plusieurs personnes peuvent travailler pour UNE société
+    @ManyToOne
+    @JoinColumn(name = "company_id") // C'est le nom de la colonne qui sera créée dans ta table SQL
+    private Company company;
+    
+    
 
 	public Long getId() {
 		return id;
@@ -48,6 +55,14 @@ public class Person {
 
 	public void setPhonenumber(String phonenumber) {
 		this.phoneNumber = phonenumber;
+	}
+	
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 
 }
