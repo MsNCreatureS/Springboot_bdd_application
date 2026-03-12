@@ -11,5 +11,5 @@ import com.erwan.Springboot_bdd_application.Models.Person;
 public interface PersonRepository extends JpaRepository<Person, Long>{
 	
 	Optional<Person> findByName(String name);
-	
+		
 }

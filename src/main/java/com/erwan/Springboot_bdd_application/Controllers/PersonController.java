@@ -92,15 +92,20 @@ public class PersonController {
 	
 	// Supprimer une personne
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deletePerson(@PathVariable Long id) {
-		// On vérifie si la personne existe via le service
-		Optional<Person> person = personService.getPersonById(id);
+	public ResponseEntity<Object> deletePerson(@PathVariable Long id) {
 		
-		if(person.isPresent()) {
-			personService.deletePerson(id); // On demande au service de supprimer
-			return new ResponseEntity<>(HttpStatus.OK);
+		try {
+			
+			personService.deletePerson(id);
+			
+			return ResponseEntity.ok().build();
+			
+		} catch (ServiceException e) {
+			
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+			
 		}
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	
 	}
 	
 	

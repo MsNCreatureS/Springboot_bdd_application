@@ -48,9 +48,22 @@ public class PersonService {
 	}
 
 	// Supprimer une personne
-	public void deletePerson(Long id) {
-		personRepository.deleteById(id);
+	public void deletePerson(Long id) throws ServiceException  {
+	    
+		
+	    if(id <= 0) {
+	        throw new ServiceException("Impossible de supprimer la personne : l'ID doit etre > 0");
+	    }
+	    
+	    // 2. On vérifie si elle n'existe PAS (le "!" veut dire "NOT")
+	    if(!personRepository.existsById(id)) {
+	        throw new ServiceException("Impossible de supprimer la personne : Elle n'existe pas en base.");
+	    }
+	    
+	    // 3. Si on arrive ici, c'est qu'elle existe ! On peut supprimer.
+	    personRepository.deleteById(id);
 	}
+	
 
     // Mettre à jour une personne
     public Person updatePerson(Long id, Person personDetails) throws ServiceException {
