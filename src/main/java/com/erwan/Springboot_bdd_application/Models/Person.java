@@ -2,6 +2,9 @@ package com.erwan.Springboot_bdd_application.Models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -21,6 +24,7 @@ public class Person {
 	// La relation : Plusieurs personnes peuvent travailler pour UNE société
     @ManyToOne
     @JoinColumn(name = "company_id") // C'est le nom de la colonne qui sera créée dans ta table SQL
+    @JsonBackReference
     private Company company;
     
     
