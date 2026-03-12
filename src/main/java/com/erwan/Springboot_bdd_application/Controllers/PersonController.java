@@ -5,7 +5,14 @@ import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.erwan.Springboot_bdd_application.Exceptions.ServiceException;
 import com.erwan.Springboot_bdd_application.Models.Person;
@@ -60,18 +67,28 @@ public class PersonController {
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	
+	
+	
 	// Mettre à jour une personne
 	@PutMapping("/{id}")
-	public ResponseEntity<Person> updatePerson(@PathVariable Long id, @RequestBody Person personDetails) {
-		// Toute la logique de modification (les setCity, setPhoneNumber) a été déplacée dans le Service !
-        // Le contrôleur est beaucoup plus léger.
-		Person updatedPerson = personService.updatePerson(id, personDetails);
+	public ResponseEntity<Object> updatePerson(@PathVariable Long id, @RequestBody Person personDetails) {
 		
-		if(updatedPerson != null) {
-			return new ResponseEntity<>(updatedPerson, HttpStatus.OK);
+		try {
+			
+			Person updatedPerson = personService.updatePerson(id, personDetails);
+			
+			return ResponseEntity.status(HttpStatus.OK).body(updatedPerson);
+			
+		} catch (ServiceException e) {
+			
+			
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+			
 		}
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		
 	}
+	
+	
 	
 	// Supprimer une personne
 	@DeleteMapping("/{id}")

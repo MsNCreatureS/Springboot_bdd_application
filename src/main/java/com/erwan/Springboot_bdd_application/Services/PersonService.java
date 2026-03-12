@@ -53,17 +53,26 @@ public class PersonService {
 	}
 
     // Mettre à jour une personne
-    public Person updatePerson(Long id, Person personDetails) {
+    public Person updatePerson(Long id, Person personDetails) throws ServiceException {
+    	
+    	if(id <= 0) {
+    		
+    		throw new ServiceException("Impossible de modifier la personne : l'ID doit etre > 0");
+    	}
+    	
+    	
         Optional<Person> person = personRepository.findById(id);
-		
-		if(person.isPresent()) {
-			Person existingPerson = person.get();
-			existingPerson.setCity(personDetails.getCity());
-			existingPerson.setPhonenumber(personDetails.getPhonenumber());
-			
-			return personRepository.save(existingPerson);
-		}
-		return null; // On gérera les erreurs plus proprement plus tard !
+        
+        if (person.isPresent()) {
+        	
+        	  Person existingPerson = person.get();
+      		existingPerson.setCity(personDetails.getCity());
+      		existingPerson.setPhonenumber(personDetails.getPhonenumber());
+      		
+      		return personRepository.save(existingPerson);
+        }
+        
+        throw new ServiceException("Impossible de modifier la personne : Veuillez entrer un ID");
     }
     
     
