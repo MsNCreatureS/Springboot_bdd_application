@@ -1,11 +1,18 @@
 package com.erwan.Springboot_bdd_application.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "persons")
@@ -28,6 +35,21 @@ public class Person {
     private Company company;
     
     
+    // Realtion avec les skills 
+    
+    @ManyToMany
+    @JoinTable(
+            name = "person_skills", // Nom de la table intermédiaire
+            joinColumns = @JoinColumn(name = "person_id"), // Clé de la personne
+            inverseJoinColumns = @JoinColumn(name = "skill_id") // Clé de la compétence
+        )
+    private List<Skill> skills;
+    
+    
+	// LE CONSTRUCTEUR VIDE (Indispensable pour Hibernate)
+    public Person() {
+    }
+	
 
 	public Long getId() {
 		return id;
@@ -68,5 +90,15 @@ public class Person {
 	public void setCompany(Company company) {
 		this.company = company;
 	}
+
+	public List<Skill> getSkills() {
+		return skills;
+	}
+
+	public void setSkills(List<Skill> skills) {
+		this.skills = skills;
+	}
+	
+	
 
 }
