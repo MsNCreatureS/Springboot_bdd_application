@@ -50,5 +50,26 @@ public class CompanyService {
 		throw new ServiceException("La company existe pas");
 		
 	}
+	
+	
+	// supprimer une compagnie 
+	
+	public void deleteCompany(Long id) throws ServiceException {
+		
+		if (id <= 0) {
+			
+			throw new ServiceException("Impossible de supprimer la company : l'ID doit etre > 0");
+		}
+		
+		
+		if(!companyRepository.existsById(id)) {
+			
+			throw new ServiceException("Impossible de supprimer la company : Elle n'existe pas en base.");
+		}
+		
+		companyRepository.deleteById(id);
+		
+		
+	}
 
 }

@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,6 +53,25 @@ public class CompanyController {
 			
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
+	}
+	
+	
+	// Supprimer une company by Id
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Object> deleteCompany(@PathVariable Long id) {
+		
+		try {
+			
+			companyService.deleteCompany(id);
+			
+			return ResponseEntity.ok().build();
+			
+		} catch (ServiceException e) {
+			
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		}
+		
 	}
 
 }

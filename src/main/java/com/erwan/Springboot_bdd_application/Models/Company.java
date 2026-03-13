@@ -5,6 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,7 +24,7 @@ public class Company {
 	
 	private String name;
 	
-	@OneToMany(mappedBy = "company")
+	@OneToMany(mappedBy = "company" , cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Person> persons;
 	
@@ -52,6 +53,8 @@ public class Company {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+
 	
 	
 
