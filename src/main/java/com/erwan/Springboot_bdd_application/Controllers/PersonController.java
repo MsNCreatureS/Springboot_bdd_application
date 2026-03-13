@@ -115,4 +115,29 @@ public class PersonController {
 		personService.deleteAllPerson();
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
+	
+	
+	
+	
+	// ajouter un skill a une personne 
+	@PutMapping("/{personId}/skills/{skillId}")
+	public ResponseEntity<Object> addSkillToPerson(@PathVariable Long personId, @PathVariable Long skillId) {
+		
+	    try {
+	    	
+	        personService.addSkillToPerson(personId, skillId);
+	        
+	        return new ResponseEntity<>("Compétence ajoutée avec succès !", HttpStatus.OK);
+	        
+	    } catch (ServiceException e) {
+	    	
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+	    }
+	}
+	
+	
+	
+	
+	
+	
 }

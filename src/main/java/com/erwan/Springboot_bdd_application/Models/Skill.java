@@ -2,6 +2,8 @@ package com.erwan.Springboot_bdd_application.Models;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,6 +23,7 @@ public class Skill {
 	private String name;
 	
 	@ManyToMany(mappedBy = "skills")
+	@JsonBackReference
 	private List<Person> persons;
 	
 	// LE CONSTRUCTEUR VIDE (Indispensable pour Hibernate)

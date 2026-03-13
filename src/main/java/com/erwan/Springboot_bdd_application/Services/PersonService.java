@@ -8,7 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.erwan.Springboot_bdd_application.Exceptions.ServiceException;
 import com.erwan.Springboot_bdd_application.Models.Person;
+import com.erwan.Springboot_bdd_application.Models.Skill;
 import com.erwan.Springboot_bdd_application.Repository.PersonRepository;
+import com.erwan.Springboot_bdd_application.Repository.SkillRepository;
 
 @Service
 @Transactional // Recommandé par ton cours pour gérer automatiquement les sauvegardes de manière sécurisée
@@ -16,10 +18,17 @@ public class PersonService {
 
 	// 2. Déclaration du repository (le "frigo")
 	private final PersonRepository personRepository;
+	
+	
+	// Ne pas oubliée de bien importer les autre reposotiry pour faire les liason !
+	private final SkillRepository skillRepository;
+	
+	
 
 	// 3. Injection du repository via le constructeur
-	public PersonService(PersonRepository personRepository) {
+	public PersonService(PersonRepository personRepository , SkillRepository skillRepository) {
 		this.personRepository = personRepository;
+		this.skillRepository = skillRepository;
 	}
 
 	// --- DÉBUT DES RÈGLES MÉTIER ET ACCÈS AUX DONNÉES ---
@@ -95,4 +104,38 @@ public class PersonService {
     	 personRepository.deleteAll();
     	 
     }
+    
+    
+    
+    // Ajout d'un skill a une personne
+
+    public void addSkillToPerson(Long personId, Long skillId) throws ServiceException {
+        
+        // On cherche la personne
+        Optional<Person> optionalPerson = personRepository.findById(personId);
+        
+        if (optionalPerson.isEmpty()) {
+            throw new ServiceException("Impossible d'ajouter la compétence : La personne n'existe pas.");
+        }
+        
+        // On cherche la compétence
+        Optional<Skill> optionalSkill = skillRepository.findById(skillId);
+        
+        if (optionalSkill.isEmpty()) {
+            throw new ServiceException("Impossible d'ajouter la compétence : Le Skill n'existe pas.");
+        }
+        
+        // Si on arrive ici, c'est qu'on a trouvé les deux !
+        Person person = optionalPerson.get();
+        Skill skill = optionalSkill.get();
+        
+        // On ajoute le skill à la liste de la personne
+        person.getSkills().add(skill);
+        
+        // On sauvegarde la personne (JPA s'occupe de remplir la table de jointure)
+        personRepository.save(person);
+    }
+    
+    
+    
 }
