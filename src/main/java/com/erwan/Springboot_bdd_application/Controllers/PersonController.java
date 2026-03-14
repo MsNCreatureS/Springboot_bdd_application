@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,9 @@ import com.erwan.Springboot_bdd_application.Exceptions.ServiceException;
 import com.erwan.Springboot_bdd_application.Models.Person;
 import com.erwan.Springboot_bdd_application.Services.PersonService; // Attention à bien importer ton nouveau Service !
 
+
+
+@CrossOrigin(origins = "http://localhost:4200") // INDISPENSABLE !
 @RestController
 @RequestMapping("api/persons")
 public class PersonController {
